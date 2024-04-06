@@ -35,8 +35,8 @@ def mask_list(images_path):
 
 
 def create_mask(image_path):
-    #images_dir = 'Path2/Path2-Model Training/Path2 Training Images'
-    images_dir = 'Path2/Path2-Model Validation/Path2 Images For Validation'
+    images_dir = 'Path2/Path2-Model Training/Path2 Training Images'
+    #images_dir = 'Path2/Path2-Model Validation/Path2 Images For Validation'
     # Read the image and Convert the image to grayscale
     image = cv2.imread(images_dir + "/" + image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -84,8 +84,9 @@ def create_mask(image_path):
     image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     masked_image = cv2.bitwise_and(image_bgr,image_bgr, mask=finalMask)
 
-    #MASK_NAME = masks_dir + image_path + '_mask.png'
-    MASK_NAME = validation_fat_thickness + '/' + image_path + '_mask.png'
+    masks_dir = 'Path2/Path2-Model Training/Path2 Fat Thickness/'
+    MASK_NAME = masks_dir +  image_path + '_mask.png'
+    #MASK_NAME = validation_fat_thickness + '/' + image_path + '_mask.png'
     #MASK_NAME = "generatedImage.jpg"
     cv2.imwrite(MASK_NAME,masked_image)
 
@@ -138,5 +139,5 @@ def create_ribeye_mask(image_path):
     #MASK_NAME = "generatedImage.jpg"
     cv2.imwrite(MASK_NAME,finalMask)
 
-mask_list('Path2/Path2-Model Validation/Path2 Images For Validation')
+mask_list('Path2/Path2-Model Training/Path2 Training Images')
 #create_mask('00001325-1.tif')
