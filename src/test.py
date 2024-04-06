@@ -31,5 +31,5 @@ model = Model(inputs=image_input, outputs=output)
 model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mean_absolute_error'])
 
 # Train the model
-model.fit(image_data, fat_thickness_labels, epochs=10, batch_size=32, validation_split=0.2)
+model.fit(image_data, fat_thickness_labels, epochs=10, batch_size=40)
 
