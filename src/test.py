@@ -1,7 +1,7 @@
 from keras.models import Model, clone_model
 from keras.layers import Input, Dense, Flatten, Conv2D, Concatenate, GlobalAveragePooling2D, Reshape, Multiply
 from keras.optimizers import Adam
-from model import excel_data, image_data
+from model import excel_data_one, excel_data_two, image_data
 
 # Define the image input
 image_input = Input(shape=(572,768,3), batch_size=40)
@@ -32,7 +32,7 @@ model = Model(inputs=image_input, outputs=output)
 model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mean_absolute_error'])
 
 # Train the model
-model.fit(image_data, excel_data, epochs=10, batch_size=40)
+# model.fit(image_data, excel_data_one, epochs=10, batch_size=40)
 
 # model.fit(image_data, excel_data, epochs=10, batch_size=40)
 # print(model.predict(validation_data))
@@ -41,8 +41,8 @@ import matplotlib.pyplot as plt
 
 # Train the model
 model_copy = clone_model(model)
-history = model.fit(image_data, excel_data[1], epochs=15, batch_size=40)
-model_copy.fit(image_data, excel_data[0], epochs=15, batch_size=40)
+history = model.fit(image_data, excel_data_one, epochs=15, batch_size=40)
+model_copy.fit(image_data, excel_data_two, epochs=15, batch_size=40)
 
 # Plot the training loss
 plt.plot(history.history['loss'])
