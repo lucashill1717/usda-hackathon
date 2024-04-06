@@ -41,4 +41,4 @@ import matplotlib.pyplot as plt
 
 # Train the model
 model.fit(image_data, excel_data, epochs=15, batch_size=40)
-model.save('model_0')
+model.save('model_0.keras')
