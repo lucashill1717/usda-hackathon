@@ -34,3 +34,18 @@ model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mean_absolu
 # Train the model
 model.fit(image_data, excel_data, epochs=10, batch_size=40)
 
+# model.fit(image_data, excel_data, epochs=10, batch_size=40)
+# print(model.predict(validation_data))
+
+import matplotlib.pyplot as plt
+
+# Train the model
+history = model.fit(image_data, excel_data[1], epochs=15, batch_size=40)
+
+# Plot the training loss
+plt.plot(history.history['loss'])
+plt.title('Model Loss')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.legend(['Train'], loc='upper right')
+plt.show()
