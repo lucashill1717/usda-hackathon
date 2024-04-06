@@ -29,3 +29,6 @@ def get_image_tensors(path: str) -> tf.Tensor:
     
     #return tf.stack(image_tensors, axis=0)
     return tf.stack(mask_tensors, axis=0)
+
+tensortemp =_png_to_tensor('Path2/Path2-Model Validation/Path2-Fat Thickness/00001312-1.tif_mask.png')
+print(tensortemp.get_shape())

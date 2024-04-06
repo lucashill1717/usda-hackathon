@@ -81,10 +81,13 @@ def create_mask(image_path):
     #cv2.fillPoly(mask, pts=closed_contour, color=(255))
     cv2.drawContours(finalMask, [largest_contour], -1, (255), thickness=cv2.FILLED)
 
+    image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+    masked_image = cv2.bitwise_and(image_bgr,image_bgr, mask=finalMask)
+
     #MASK_NAME = masks_dir + image_path + '_mask.png'
     MASK_NAME = validation_fat_thickness + '/' + image_path + '_mask.png'
     #MASK_NAME = "generatedImage.jpg"
-    cv2.imwrite(MASK_NAME,finalMask)
+    cv2.imwrite(MASK_NAME,masked_image)
 
 def create_ribeye_mask(image_path):
     # Read the image and Convert the image to grayscale
