@@ -1,4 +1,4 @@
-from keras.models import Model
+from keras.models import Model, clone_model
 from keras.layers import Input, Dense, Flatten, Conv2D, Concatenate, GlobalAveragePooling2D, Reshape, Multiply
 from keras.optimizers import Adam
 from model import excel_data, image_data
@@ -40,7 +40,9 @@ model.fit(image_data, excel_data, epochs=10, batch_size=40)
 import matplotlib.pyplot as plt
 
 # Train the model
+model_copy = clone_model(model)
 history = model.fit(image_data, excel_data[1], epochs=15, batch_size=40)
+model_copy.fit(image_data, excel_data[0], epochs=15, batch_size=40)
 
 # Plot the training loss
 plt.plot(history.history['loss'])
