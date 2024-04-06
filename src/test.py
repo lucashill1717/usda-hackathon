@@ -4,7 +4,8 @@ from keras.optimizers import Adam
 from model import excel_data, image_data
 
 # Define the image input
-image_input = Input(shape=(40,572,768,3))
+image_input = Input(shape=(572,768,3), batch_size=40)
+print(image_input)
 
 # CNN model for image processing
 conv_layer_image = Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(image_input)
