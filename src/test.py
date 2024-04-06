@@ -1,9 +1,10 @@
 from keras.models import Model
 from keras.layers import Input, Dense, Flatten, Conv2D, Concatenate, GlobalAveragePooling2D, Reshape, Multiply
 from keras.optimizers import Adam
+from model import excel_data, image_data
 
 # Define the image input
-image_input = Input(shape=(768,572,3))
+image_input = Input(shape=(40,572,768,3))
 
 # CNN model for image processing
 conv_layer_image = Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(image_input)
@@ -31,5 +32,5 @@ model = Model(inputs=image_input, outputs=output)
 model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mean_absolute_error'])
 
 # Train the model
-model.fit(image_data, fat_thickness_labels, epochs=10, batch_size=40)
+print(model.fit(image_data, excel_data, epochs=10, batch_size=40))
 
