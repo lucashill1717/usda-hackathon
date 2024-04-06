@@ -1,7 +1,7 @@
 from keras.models import Model, clone_model
 from keras.layers import Input, Dense, Flatten, Conv2D, Concatenate, GlobalAveragePooling2D, Reshape, Multiply
 from keras.optimizers import Adam
-from model import excel_data, image_data
+from model import excel_two, thickness_image_data
 
 # Define the image input
 image_input = Input(shape=(572,768,3), batch_size=40)
@@ -25,7 +25,7 @@ flatten_layer_image = Flatten()(conv_layer_image_with_attention)
 # Add additional data input and concatenate if we need
 
 # Output layer
-output = Dense(2, activation='linear')(flatten_layer_image)  # Assuming single output for fat thickness prediction
+output = Dense(1, activation='linear')(flatten_layer_image)  # Assuming single output for fat thickness prediction
 
 # Create and compile the model
 model = Model(inputs=image_input, outputs=output)
@@ -40,5 +40,5 @@ model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mean_absolu
 import matplotlib.pyplot as plt
 
 # Train the model
-model.fit(image_data, excel_data, epochs=15, batch_size=40)
+model.fit(thickness_image_data, excel_two, epochs=15, batch_size=40)
 model.save('model_0.keras')
