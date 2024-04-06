@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 from keras.preprocessing import image_dataset_from_directory as idfd
+from PIL import Image, ImageSequence
 # from tensorflow.python.keras import Input
 
 DIRECTORY = 'Path2/Path2-Model Training/Path2/Path2-Model Training/Path2 Training Images';
