@@ -5,7 +5,6 @@ from model import excel_data, image_data
 
 # Define the image input
 image_input = Input(shape=(572,768,3), batch_size=40)
-print(image_input)
 
 # CNN model for image processing
 conv_layer_image = Conv2D(filters=32, kernel_size=(3, 3), activation='relu')(image_input)
@@ -33,5 +32,5 @@ model = Model(inputs=image_input, outputs=output)
 model.compile(optimizer=Adam(), loss='mean_squared_error', metrics=['mean_absolute_error'])
 
 # Train the model
-print(model.fit(image_data, excel_data, epochs=10, batch_size=40))
+model.fit(image_data, excel_data, epochs=10, batch_size=40)
 
