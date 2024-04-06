@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 # Define paths to your dataset
 images_dir = 'Path2/Path2-Model Training/Path2 Training Images'
 BATCH_SIZE = 40
-OUTPUTDIRECTORYNAME = 'Path2/Path2-Model Training/Path2 Training Masks'
+OUTPUTDIRECTORYNAME = 'Path2/Path2-Model Training/Path2 Fat Thickness Masks'
 #TODO We need to create this mask
-masks_dir = 'Path2/Path2-Model Training/Path2 Training Masks/'
+masks_dir = 'Path2/Path2-Model Training/Path2 Fat Thickness Masks/'
 
 # Define target size for images and masks
 target_size = (572, 768)  # adjust according to your needs
@@ -83,49 +83,3 @@ def create_mask(image_path):
 
 mask_list(images_dir)
 #create_mask('00001325-1.tif')
-
-# # Function to load and preprocess images and masks
-# def load_data(images_path, masks_path, target_size):
-#     images = []
-#     masks = []
-#     for image_name in os.listdir(images_path):
-#         #reads gets image path
-#         image_path = os.path.join(images_path, image_name)
-#         #reads mask path based on image name
-#         mask_path = os.path.join(masks_path, image_name.split('.')[0] + '_mask.png')
-#         if os.path.exists(mask_path):
-#             # Load and preprocess image
-#             image = imread(image_path)
-#             image = resize(image, target_size)
-#             images.append(image)
-#             # Load and preprocess mask
-#             mask = imread(mask_path)
-#             mask = resize(mask, target_size)
-#             masks.append(mask)
-#         else: 
-#             print("Image not found")
-#     return np.array(images), np.array(masks)
-
-# def join_images_and_masks():
-#     # Load and preprocess data
-#     images, masks = load_data(images_dir, masks_dir, target_size)
-
-#     # Data augmentation using ImageDataGenerator
-
-#     image_datagen = ImageDataGenerator()
-#     mask_datagen = ImageDataGenerator()
-
-#     # Provide same seed and keyword arguments to the fit and flow methods
-#     seed = 1
-#     image_datagen.fit(images, augment=True, seed=seed)
-#     mask_datagen.fit(masks, augment=True, seed=seed)
-
-#     image_generator = image_datagen.flow(images, seed=seed, batch_size=BATCH_SIZE)
-#     mask_generator = mask_datagen.flow(masks, seed=seed, batch_size=BATCH_SIZE)
-
-#     # Combine generators into one which yields image and masks
-#     train_generator = zip(image_generator, mask_generator)
-
-# masks_dir = mask_list(images_dir)
-# #TODO this code does not return anything
-# join_images_and_mask()
