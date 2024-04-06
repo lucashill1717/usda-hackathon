@@ -1,7 +1,7 @@
 import numpy as npsrc
 import os
-#from keras.preprocessing.image import ImageDataGenerator
-#from skimage.io import imread
+from keras.preprocessing.image import ImageDataGenerator
+from skimage.io import imread
 #from skimage.transform import resize
 import cv2
 import matplotlib.pyplot as plt  
@@ -11,54 +11,79 @@ images_dir = 'Path2/Path2-Model Training/Path2 Training Images'
 BATCH_SIZE = 40
 OUTPUTDIRECTORYNAME = 'Path2/Path2-Model Training/Path2 Training Masks'
 #TODO We need to create this mask
-masks_dir = 'path_to_masks_directory'
+masks_dir = 'Path2/Path2-Model Training/Path2 Training Masks/'
 
 # Define target size for images and masks
 target_size = (572, 768)  # adjust according to your needs
 
 def mask_list(images_path):
     os.mkdir(OUTPUTDIRECTORYNAME)
+    masks = []
     for image_name in os.listdir(images_path):
-        create_mask()
-        #TODO save mask to a folder/whatever is best for the data img generator, maybe just a python array of contours
-    mask_datagen = ImageDataGenerator()
-    mask_datagen.fit(masks, augment=True, seed=seed)
-    mask_generator = mask_datagen.flow(masks, seed=seed, batch_size=BATCH_SIZE)
+        mask_path = image_name.split('/')[-1].split('.')[0] + '_mask.png'
+        create_mask(image_name)
+    #     if os.path.exists(mask_path):
+    #         mask = imread(mask_path)
+    #         masks.append(mask)
+    # seed = 1
+    # mask_datagen = ImageDataGenerator()
+    # mask_datagen.fit(masks, augment=True, seed=seed)
+    # mask_tensor = mask_datagen.flow(masks, seed=seed, batch_size=BATCH_SIZE)
+    # return mask_tensor
+
 
 def create_mask(image_path):
     # Read the image and Convert the image to grayscale
-    image = cv2.imread(image_path)
+    image = cv2.imread(images_dir + "/" + image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+    # START ADDED
+    # Define the region of interest (ROI) coordinates
+    x, y, w, h = 192,0,384,286  # Example ROI coordinates (x, y, width, height)
+
+    # Create an empty mask with the same dimensions as the image
+    mask_gray = npsrc.zeros(target_size, dtype=npsrc.uint8)
+
+    # Draw a filled rectangle on the mask to define the ROI
+    cv2.rectangle(mask_gray, (x, y), (x + w, y + h), (255), thickness=cv2.FILLED)
+
+    mask = cv2.bitwise_and(gray, gray, mask=mask_gray)
+    # END ADDED
+
     # Threshold the image to extract fat regions
-    hierarchy, binary = cv2.threshold(gray, 100, 255, cv2.THRESH_BINARY)
+    hierarchy, binary = cv2.threshold(mask, 100, 255, cv2.THRESH_BINARY)
 
-    # Find contours of fat regions
-    #TODO this can also be done with a gray-scale image
+    #CASE FAT THICKNESS IS NORMAL
     contours, hierarchy = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
     #iterates through the contours and populates area with areas
     contour_areas = [cv2.contourArea(contour) for contour in contours]
-
     # Get largest contour
     largest_contour_index = contour_areas.index(max(contour_areas))
     largest_contour = contours[largest_contour_index]
 
-    #View where the contours be at
-    view_image = cv2.imread(image_path)
-    view_image_rgb = cv2.cvtColor(view_image, cv2.COLOR_BGR2RGB)
+    print(image_path + " " + str(cv2.contourArea(largest_contour)))
 
-    #mask = npsrc.zeros_like(gray)
+    # # Sort contours by area in descending order
+    # contours = sorted(contours, key=cv2.contourArea, reverse=True)
+
+    # # Select the second largest contour
+    # if len(contours) > 1:
+    #     largest_contour = contours[1]  # Use the second largest contour
+    # else:
+    #     largest_contour = contours[0]  # Use the largest contour if only one contour is found
+    # #END
+
+    finalMask = npsrc.zeros_like(gray)
     #cv2.fillPoly(mask, pts=closed_contour, color=(255))
-    #cv2.drawContours(mask, largest_contour, -1, (0,255,0), thickness=cv2.FILLED)
+    cv2.drawContours(finalMask, [largest_contour], -1, (255), thickness=cv2.FILLED)
 
-    cv2.drawContours(view_image_rgb, largest_contour, -1, (0,255,0),3)
-    #cv2.fillPoly(view_image_rgb, pts = largest_contour, color=(0,255,0))
-    cv2.imwrite('measuredContour.jpg',view_image_rgb)
-    plt.imshow(view_image_rgb)
+    MASK_NAME = masks_dir + image_path + '_mask.png'
+    #MASK_NAME = "generatedImage.jpg"
+    cv2.imwrite(MASK_NAME,finalMask)
 
-create_mask('Path2/Path2-Model Training/Path2 Training Images/00001273-2.tif')
-        
+mask_list(images_dir)
+#create_mask('00001325-1.tif')
+
 # # Function to load and preprocess images and masks
 # def load_data(images_path, masks_path, target_size):
 #     images = []
