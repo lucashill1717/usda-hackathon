@@ -10,10 +10,8 @@ BATCH_SIZE = 40
 TARGET_SIZE = (768,572)
 
 excel = pd.read_excel('Path2/Path2-Model Training/Path2 Data.xlsx')
-column_one = excel['Ribeye (sq inches)']
-column_two = excel['FatThickness, inches']
-excel_data_one = tf.convert_to_tensor(column_one.values)
-excel_data_two = tf.convert_to_tensor(column_two.values)
+columns = excel[['Ribeye (sq inches)', 'FatThickness, inches']]
+excel_data = tf.convert_to_tensor(columns.values)
 
 image_data = get_image_tensors(INPUT_DIRECTORY)
 validation_data = get_image_tensors(VALIDATION_DIRECTORY)
